@@ -101,7 +101,7 @@
           </div>
     <ol id="preview" style="overflow-y: auto !important;">
     </ol>
-    <button class="btn btn-info" onclick="download()">Download Pdf</button>
+    <button class="btn btn-info d-none" id="download" onclick="download()">Download Pdf</button>
     </div>
     <section>
     <div class="container foot text-center" id="foot">
@@ -145,7 +145,11 @@
         EL_browse.addEventListener('change', ev => {
         //EL_preview.innerHTML = ''; // Remove old images and data
         const files = ev.target.files;
-        console.log(files)
+        if(files.length == 0){
+            document.getElementById('download').classList.add('d-none')
+        }else{
+            document.getElementById('download').classList.remove('d-none')
+        }
         if (!files || !files[0]) return alert('File upload not supported');
         [...files].forEach( readImage );
         });
