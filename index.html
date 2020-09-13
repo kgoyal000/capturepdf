@@ -156,7 +156,7 @@
             EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name}</li>`)        
                 images.push(base64data)
                 var storage = firebase.storage().ref('pdfCapture/'+file.name);
-                var upload = storage.put(blob);
+                var upload = storage.put(file);
                 
                 upload.on(
                     "state_changed",
