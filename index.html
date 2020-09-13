@@ -166,7 +166,7 @@
                 upload.on(
                     "state_changed",
                     function progress(snapshot) {
-                       document.getElementById("progress_con").classList.remove('d-none');
+                       document.getElementById("progress_con").classList.add('d-none');
                       var percentage =
                         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                       document.getElementById("progress").value = percentage;
