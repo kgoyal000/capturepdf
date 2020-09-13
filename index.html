@@ -102,8 +102,10 @@
           </div>
     <ol id="preview" style="overflow-y: auto !important;">
     </ol>
+        <div class="d-none" id="progress_con">
            <p id="uploading" style="font-weight: bold;"></p>
-<progress value="0" max="100" id="progress" class="d-none"></progress>
+<progress value="0" max="100" id="progress" ></progress>
+        </div>
     <button class="btn btn-info d-none" id="download" onclick="download()">Download Pdf</button>
     </div>
     <section>
@@ -164,7 +166,7 @@
                 upload.on(
                     "state_changed",
                     function progress(snapshot) {
-                       document.getElementById("progress").classList.remove('d-none');
+                       document.getElementById("progress_con").classList.remove('d-none');
                       var percentage =
                         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                       document.getElementById("progress").value = percentage;
@@ -177,7 +179,7 @@
             
                     function complete() {
                     console.log('uploaded')
-                        document.getElementById("progress").classList.add('d-none');
+                        document.getElementById("progress_con").classList.add('d-none');
                         //  getFileUrl('recordings/'+fileName)
                     }
                   );
