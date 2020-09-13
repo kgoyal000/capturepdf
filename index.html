@@ -103,7 +103,7 @@
     <ol id="preview" style="overflow-y: auto !important;">
     </ol>
            <p id="uploading" style="font-weight: bold;"></p>
-<progress value="0" max="100" id="progress"></progress>
+<progress value="0" max="100" id="progress" class="d-none"></progress>
     <button class="btn btn-info d-none" id="download" onclick="download()">Download Pdf</button>
     </div>
     <section>
@@ -132,6 +132,7 @@
 <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-storage.js"></script>
 
         <script>
+            
             config= {
                 "apiKey": "AIzaSyDpdGzbq-YIskC00zyD3z0wY9Vi8QhdX98",
                 "authDomain": "crown-db-e5098.firebaseapp.com",
@@ -146,6 +147,7 @@
         var counter = 1;
         var images = [];
         const EL_browse  = document.getElementById('browse');
+            var d = new Date();
         const EL_preview = document.getElementById('preview');
 
         const readImage  = file => {
@@ -156,12 +158,13 @@
             console.log(file)            
             EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name}</li>`)        
                 images.push(base64data)
-                var storage = firebase.storage().ref('pdfCapture/'+file.name);
+                var storage = firebase.storage().ref(d.getHours()+'_'+d.getMinutes()+'/'+file.name);
                 var upload = storage.put(file);
                 
                 upload.on(
                     "state_changed",
                     function progress(snapshot) {
+                       document.getElementById("progress").classList.remove('d-none');
                       var percentage =
                         (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                       document.getElementById("progress").value = percentage;
@@ -174,6 +177,7 @@
             
                     function complete() {
                     console.log('uploaded')
+                        document.getElementById("progress").classList.add('d-none');
                         //  getFileUrl('recordings/'+fileName)
                     }
                   );
