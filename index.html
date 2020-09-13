@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Capture Images to Pdf </title>
@@ -139,9 +137,8 @@
             reader.onloadend = function() {
             var base64data = reader.result;    
             console.log(file)            
-            EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name} with Orientation value: ${file.exifdata.Orientation ||1 }</li>`)
-            resetOrientation(base64data,file.exifdata.Orientation || 1)        
-                //  images.push(base64data)
+            EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name} with Orientation value: ${file.exifdata.Orientation ||1 }</li>`)        
+                images.push(base64data)
         }
         if ( !(/^image\/(png|jpe?g|gif)$/).test(file.type) )
             return EL_preview.insertAdjacentHTML('beforeend', `Unsupported format ${file.type}: ${file.name}<br>`);
@@ -183,7 +180,7 @@
     }
         
         
-            function resetOrientation(srcBase64, srcOrientation) {
+       /*     function resetOrientation(srcBase64, srcOrientation) {
         var img = new Image();    
       
         img.onload = function() {
@@ -222,7 +219,7 @@
       
         img.src = srcBase64;
       };
-
+*/
 // Disabling Anyone to copy code
 document.addEventListener('contextmenu', event => event.preventDefault());
 
