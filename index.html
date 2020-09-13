@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Capture Images to Pdf </title>
@@ -137,8 +139,9 @@
             reader.onloadend = function() {
             var base64data = reader.result;    
             console.log(file)            
-            EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name} </li>`)
-            images.push(base64data)
+            EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name} with Orientation value: ${file.exifdata.Orientation}</li>`)
+            resetOrientation(base64data,file.exifdata.Orientation || 1)        
+                //  images.push(base64data)
         }
         if ( !(/^image\/(png|jpe?g|gif)$/).test(file.type) )
             return EL_preview.insertAdjacentHTML('beforeend', `Unsupported format ${file.type}: ${file.name}<br>`);
@@ -178,6 +181,48 @@
         doc.save('ExamPaper.pdf')
 
     }
+        
+        
+            function resetOrientation(srcBase64, srcOrientation) {
+        var img = new Image();    
+      
+        img.onload = function() {
+          var width = img.width,
+              height = img.height,
+              canvas = document.createElement('canvas'),
+              ctx = canvas.getContext("2d");
+      
+          // set proper canvas dimensions before transform & export
+          if (4 < srcOrientation && srcOrientation < 9) {
+            canvas.width = height;
+            canvas.height = width;
+          } else {
+            canvas.width = width;
+            canvas.height = height;
+          }
+      
+          // transform context before drawing image
+          switch (srcOrientation) {
+            case 2: ctx.transform(-1, 0, 0, 1, width, 0); break;
+            case 3: ctx.transform(-1, 0, 0, -1, width, height); break;
+            case 4: ctx.transform(1, 0, 0, -1, 0, height); break;
+            case 5: ctx.transform(0, 1, 1, 0, 0, 0); break;
+            case 6: ctx.transform(0, 1, -1, 0, height, 0); break;
+            case 7: ctx.transform(0, -1, -1, 0, height, width); break;
+            case 8: ctx.transform(0, -1, 1, 0, 0, width); break;
+            default: break;
+          }
+      
+          // draw image
+          ctx.drawImage(img, 0, 0);
+      
+          // export base64
+          images.push(canvas.toDataURL());
+        };
+      
+        img.src = srcBase64;
+      };
+
 // Disabling Anyone to copy code
 document.addEventListener('contextmenu', event => event.preventDefault());
 
