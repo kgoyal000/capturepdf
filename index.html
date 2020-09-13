@@ -137,7 +137,7 @@
             reader.onloadend = function() {
             var base64data = reader.result;    
             console.log(file)            
-            EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name} with Orientation value: ${file.exifdata.Orientation ||1 }</li>`)        
+            EL_preview.insertAdjacentHTML('beforeend', `<li> Added  ${file.type}: ${file.name}</li>`)        
                 images.push(base64data)
         }
         if ( !(/^image\/(png|jpe?g|gif)$/).test(file.type) )
